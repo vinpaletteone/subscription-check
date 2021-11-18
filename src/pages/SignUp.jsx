@@ -26,7 +26,7 @@ export default function SignUp() {
               }).then(() => {
                 // Profile updated!
                 // ...
-
+                window.location = '/'; 
                 
               }).catch((error) => {
                 // An error occurred
