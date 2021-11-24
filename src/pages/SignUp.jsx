@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import InputLabel from '../components/InputLabel'
 import AuthBtn from '../components/AuthBtn'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
+import { useUserContext } from '../context/UserContext';
 
 
 export default function SignUp() {
     const auth = getAuth();
-    
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const { logIn } = useUserContext();
 
    
     const handleSignUp = (e) => {
@@ -24,13 +25,11 @@ export default function SignUp() {
             updateProfile(auth.currentUser, {
                 displayName: name,
               }).then(() => {
-                // Profile updated!
-                // ...
+                signInWithEmailAndPassword(auth, id, password)
+                logIn({id:id, name:name})
                 window.location = '/'; 
-                
               }).catch((error) => {
-                // An error occurred
-                // ...
+                  console.log(error.message);
               });
         })
         .catch((error) => {
@@ -55,3 +54,9 @@ export default function SignUp() {
         </div>
     )
 }
+
+//아이디 이메일 형식인지 체크 에러처리 대응
+//비밀번호 6자리 이상인지 체크
+//비밀번호 + 비밀번호 확인 값이 같은지 체크
+//이름이 한글인지 체크
+//회원가입시 자동 로그인하기
