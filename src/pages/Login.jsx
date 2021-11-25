@@ -1,14 +1,15 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import InputLabel from '../components/InputLabel';
 import AuthBtn from '../components/AuthBtn'
 import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import { useUserContext } from '../context/UserContext';
+import Main from './Main';
 
 export default function Login() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const auth = getAuth();
-    const { logIn } = useUserContext();
+    const { user, logIn } = useUserContext();
 
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, id, password)
@@ -22,14 +23,20 @@ export default function Login() {
 
             console.log(errorCode, errorMessage);
         });
-
     }
+
+    useEffect(() => {
+        console.log(user.isLogin);
+     
+    }, [])
     return (
         <>
-            로그인이 필요합니다!
-            <InputLabel type="text" name="id" placeholder="id" label="id" defaultValue={id} onChange={(e)=>setId(e.target.value)}/>
-            <InputLabel type="password" name="id" placeholder="pw" label="pw" defaultValue={password} onChange={(e)=>setPassword(e.target.value)} />
-            <AuthBtn onClick={handleLogin}>로그인</AuthBtn>
+            {user.isLogin || 
+            <>
+                <InputLabel type="text" name="id" placeholder="id" label="id" defaultValue={id} onChange={(e)=>setId(e.target.value)}/>
+                <InputLabel type="password" name="id" placeholder="pw" label="pw" defaultValue={password} onChange={(e)=>setPassword(e.target.value)} />
+                <AuthBtn onClick={handleLogin}>로그인</AuthBtn>
+            </> }
         </>
     )
 }

@@ -6,12 +6,12 @@ export const userContext = createContext({
     logOut: () => {},
 });
 
-const USER = { id:'', name:'', isLogin: false };
+const USER = { id:'', name:'', isLogin: false};
 
 export function UserContextProvider({children}){
     const [user, setUser] = useState(USER);
     const logIn = (id, name) => {
-        setUser({ id:id, name:name, isLogin:true })
+        setUser({ id:id, name:name, isLogin:true})
     }
     const logOut = () => setUser(USER);
 
