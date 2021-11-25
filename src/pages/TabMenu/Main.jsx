@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { useUserContext } from '../context/UserContext';
-import Loading from '../components/Loading';
+import { useUserContext } from '../../context/UserContext';
+import Loading from '../../components/Loading';
+import { Link } from 'react-router-dom';
+import Footer from '../../components/Layout/Footer';
 
 export default function Main() {
     const auth = getAuth();
-    const [loading, setLoading] = useState(true);
-    const { user, logIn, logOut } = useUserContext();
+    const [loading, setLoading] = useState(null);
+    const { user, logIn, logOut} = useUserContext();
     
     //로그아웃
     const firbaseLogout = () => {
@@ -20,25 +22,28 @@ export default function Main() {
 
     useEffect(()=>{
         //로그인되어 있는지 체크
+        setLoading(true);
         onAuthStateChanged(auth, (userInfo) => {
             if(userInfo){
                 logIn(userInfo.email, userInfo.displayName);
                 setLoading(false);
             }else{
-                setLoading(true);
+                logOut()
             }
         })
+      
     },[]);
 
-    console.log(user.isLogin)
+    if(loading) return <Loading />
     return (
-        loading ? 
-            <Loading /> 
-        :
-            user.isLogin &&
-            <>
+        user.isLogin && 
+        <>
+            <div>
                 hi {user.name}
                 <button onClick={firbaseLogout}>로그아웃</button> 
-            </>
+                <Link to='/Test'>Test</Link>
+            </div>
+            <Footer />
+        </>
     )
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import InputLabel from '../components/InputLabel'
-import AuthBtn from '../components/AuthBtn'
+import InputLabel from '../../components/InputLabel'
+import AuthBtn from '../../components/AuthBtn'
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
-import { useUserContext } from '../context/UserContext';
+import { useUserContext } from '../../context/UserContext';
 
 
 export default function SignUp() {
